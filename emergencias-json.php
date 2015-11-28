@@ -61,6 +61,7 @@ class Emergencias_JSON {
 		if ( $post->post_type == 'session' ) {
 			
 			$this->generate_sessions_json();
+			$this->generate_locations_json();
 			
 		}
 		
@@ -263,6 +264,7 @@ class Emergencias_JSON {
 	
 	function generate_speakers_json() {
 		
+		// veja e explicacao na generate_sessions_json
 		if (!function_exists('qtranxf_use')) {
 			function qtranxf_use($x = false, $text, $y = false) {
 				return $text;
@@ -339,6 +341,69 @@ class Emergencias_JSON {
 			$this->savejson('speakers', $l, $results[$l]);
 		}
 		
+	}
+	
+	function generate_locations_json() {
+		
+		// veja e explicacao na generate_sessions_json
+		if (!function_exists('qtranxf_use')) {
+			function qtranxf_use($x = false, $text, $y = false) {
+				return $text;
+			}
+		}
+		
+		$terms = get_terms('session-location', array(
+			'hide_empty' => false
+		));
+		
+		
+		$resutls = array();
+		foreach ($this->languages as $l)
+			$results[$l] = array();
+		
+		
+		
+		
+		foreach ($this->languages as $l) {
+			
+			if (is_array($terms)) {
+
+				
+				foreach($terms as $term) {
+					
+					$r = array();
+					
+					
+					
+					if (is_object($term) && isset($term->name)) {
+						$term_name = $type->name;
+						
+						//Ah, como eu amo o QTranslate
+						$term_translations = get_option('qtranslate_term_name');
+						if (is_array($term_translations) && isset($term_translations[$term_name]) && is_array($term_translations[$term_name]) && isset($term_translations[$term_name][$l])) {
+							$res['terms']['types'][] = $term_translations[$term_name][$l];
+						} else {
+							$res['terms']['types'][] = $term_name;
+						}
+						
+						$r['id'] = $term->term_taxonomy_id;
+						$r['name'] = $term_name;
+						$r['shortDescription'] = qtranxf_use($l, $term->description, false);
+						
+						array_push($results[$l], $r);
+
+					}
+					
+				} // foreach term
+				
+			}
+			
+		} //foreach language
+		
+		foreach ($this->languages as $l) {
+			$this->savejson('spaces', $l, $results[$l]);
+		}
+	
 	}
 
 	
