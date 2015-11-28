@@ -183,6 +183,10 @@ class Emergencias_JSON {
 		    $r['timestamp'] = $timestamp;
 		    $r['defaultImage'] = $defaultImage;
 		    $r['defaultImageThumb'] = $defaultImageThumb;
+		    $r['registration_code'] = $registration_code;
+		    $r['registration_code_title'] = $registration_code_title;
+		    $r['registration_code_text'] = $registration_code_text;
+		    
 		    $r['terms'] = array();
 		    
 		    $r['speakers'] = array();
