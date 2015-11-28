@@ -259,7 +259,81 @@ class Emergencias_JSON {
 	
 	function generate_speakers_json() {
 		
+		if (!function_exists('qtranxf_use')) {
+			function qtranxf_use($x = false, $text, $y = false) {
+				return $text;
+			}
+		}
+
+		global $wpdb;
 		
+		$q = "SELECT ID, post_title, post_content FROM $wpdb->posts WHERE post_type = 'speaker' AND post_status = 'publish'";
+		
+		$posts = $wpdb->get_results($q);
+		
+		$resutls = array();
+		foreach ($this->languages as $l)
+			$results[$l] = array();
+
+		
+		foreach ($posts as $post) {
+		
+			//meta dados
+			$speaker_keynote = get_post_meta($post->ID, 'speaker_keynote', true);
+			$speaker_title = get_post_meta($post->ID, 'speaker_title', true);
+			
+			//Imagens
+			$thumb_id = get_post_thumbnail_id( $post->ID );
+			
+			$defaultImage = '';
+			$defaultImageThumb = '';
+			
+			if ($thumb_id) {
+				$img = wp_get_attachment_image_src($thumb_id);
+				
+				if (is_array($img) && isset($img[0]))
+					$defaultImageThumb = $img[0];
+				
+				$img = wp_get_attachment_image_src($thumb_id, 'full');
+				if (is_array($img) && isset($img[0]))
+					$defaultImage = $img[0];
+				
+			}
+			////////////
+			
+			
+			
+			
+			// Comecamos a montar o array
+			$r = array();
+			
+			$r['id'] = $post->ID;
+		    $r['defaultImage'] = $defaultImage;
+		    $r['defaultImageThumb'] = $defaultImageThumb;
+		    $r['speaker_keynote'] = $speaker_keynote;
+		    $r['speaker_title'] = $speaker_title;
+		    
+		    
+		    // tratamos os campos traduzíveis
+		    foreach ($this->languages as $l) {
+				
+				$res = $r;
+				$res['name'] = qtranxf_use($l, $post->post_title,false);
+				$res['shortDescription'] = qtranxf_use($l, $post->post_excerpt,false);
+				$res['description'] = qtranxf_use($l, $post->post_content,false);
+				
+				array_push($results[$l], $res);
+				
+				
+				
+			} //foreach language
+			
+		
+		}// foreach post
+		
+		foreach ($this->languages as $l) {
+			$this->savejson('speakers', $l, $results[$l]);
+		}
 		
 	}
 
