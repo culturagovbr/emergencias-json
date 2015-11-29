@@ -77,6 +77,10 @@ class Emergencias_JSON {
 	function savejson($type, $language, $data) {
 		
 		$folder = $this->get_dir();
+		
+		if (!$folder)
+			return false;
+		
 		$filename = $folder . $type . '-' . $language . '.json';
 		$json = json_encode($data);
 		
