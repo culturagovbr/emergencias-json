@@ -11,7 +11,7 @@ Esse plugin gera 3 conjuntos de arquivos jsons:
 
 3. para os lugares (taxonomia session-location)
 
-Pra cada um desses 3 tipos, são gerados 3 arquivos json, um para cada idioma:
+Pra cada um desses 3 tipos, são gerados 3 arquivos json, um para cada idioma (os códigos dos idiomas seguem o padrão do QTranslate):
 
 events-en.json
 events-pb.json
