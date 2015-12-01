@@ -380,7 +380,7 @@ class Emergencias_JSON {
 					
 					
 					if (is_object($term) && isset($term->name)) {
-						$term_name = $type->name;
+						$term_name = $term->name;
 						
 						//Ah, como eu amo o QTranslate
 						$term_translations = get_option('qtranslate_term_name');
