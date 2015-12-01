@@ -385,10 +385,8 @@ class Emergencias_JSON {
 						//Ah, como eu amo o QTranslate
 						$term_translations = get_option('qtranslate_term_name');
 						if (is_array($term_translations) && isset($term_translations[$term_name]) && is_array($term_translations[$term_name]) && isset($term_translations[$term_name][$l])) {
-							$res['terms']['types'][] = $term_translations[$term_name][$l];
-						} else {
-							$res['terms']['types'][] = $term_name;
-						}
+							$term_name = $term_translations[$term_name][$l];
+						} 
 						
 						$r['id'] = $term->term_taxonomy_id;
 						$r['name'] = $term_name;
