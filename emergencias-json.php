@@ -114,7 +114,7 @@ class Emergencias_JSON {
 		
 		global $wpdb;
 		
-		$q = "SELECT ID, post_title, post_content, post_excerpt FROM $wpdb->posts WHERE post_type = 'session' AND post_status IN ('publish','pending')";
+		$q = "SELECT ID, post_title, post_content, post_excerpt FROM $wpdb->posts WHERE post_type = 'session' AND post_status = 'publish'";
 		
 		$posts = $wpdb->get_results($q);
 		
